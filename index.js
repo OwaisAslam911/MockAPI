@@ -57,18 +57,21 @@ var stdlist;
 async function fetchdata(){
   var stdlist = await fetch("https://66c46cafb026f3cc6cef4c3e.mockapi.io/aptech/NewAddmission");
   var studentlist = await stdlist.json();
-    console.log(studentlist);
+
     table(studentlist)
-}
-function table(apidata){
+  }
+  function table(apidata){
+  
    
-    
   for( var i=1 ; i <= apidata.length; i++){
   
+    var apiDataSet =apidata;
+
+    // console.log(apiDataSet)
       var TableRow = document.createElement('tr');
     
       var TableHeader = document.createElement('td');
-      TableHeader.innerText = apidata[i].id;
+      TableHeader.innerText = apiDataSet[0].id;
       TableRow.append(TableHeader);
     
       var TableData1 = document.createElement('td');
@@ -83,9 +86,45 @@ function table(apidata){
       var TableData3 = document.createElement('td');
       TableData3.innerText = apidata[i].course;
       TableRow.append(TableData3);
-      // console.log(TableRow);
+
+     
+    // Create a single cell for links
+    var ButtonCell = document.createElement('td');
+    
+    // Create and configure Edit button
+    var EditButton = document.createElement('button');
+    EditButton.innerText = 'Edit';
+    EditButton.className = 'btn btn-primary';
+    EditButton.dataset.id = apiDataSet[i].id
+
+    EditButton.onclick = function( ) {
+    //  console.log(this.dataset.id)
+    };
+    ButtonCell.append(EditButton);
+
+    // Create and configure Delete button
+    var DeleteButton = document.createElement('button');
+    DeleteButton.innerText = 'Delete';
+    DeleteButton.className = 'btn btn-danger';
+    DeleteButton.dataset.id = apiDataSet[i].id
+
+    DeleteButton.onclick = function( ) {
+    //  console.log(this.dataset.id)
+    };
+    ButtonCell.append(DeleteButton);
+
+    // Append the button cell to the row
+    TableRow.append(ButtonCell);
+
       var tb = document.getElementById('tablebody');
       tb.append(TableRow);
     }
   }
-  
+
+  async function deleteRecord(){
+    const stdlist = await fetch("https://66c46cafb026f3cc6cef4c3e.mockapi.io/aptech/NewAddmission");
+    const userDataSet =await stdlist.json();
+    var stdSingleData = await userDataSet.filter(option=> option.userDataSet);
+    console.log(stdSingleData)
+
+  }
